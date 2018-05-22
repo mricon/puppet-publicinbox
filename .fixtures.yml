@@ -1,0 +1,8 @@
+fixtures:
+  forge_modules:
+    stdlib: 'puppetlabs-stdlib'
+    git: 'puppetlabs-git'
+    vcsrepo: 'puppetlabs-vcsrepo'
+    cpanm: 'jamesmcdonald-cpanm'
+  symlinks:
+    publicinbox: "#{source_dir}"

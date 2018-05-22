@@ -1,0 +1,34 @@
+---
+publicinbox::runuser: 'pitestuser'
+publicinbox::rungroup: 'pitestgroup'
+
+publicinbox::make_test: true
+
+publicinbox::config::nntpserver:
+  - 'nntp://bupkes.example.com'
+  - 'nntp://bogus.example.com'
+
+publicinbox::config::watch:
+  spamcheck: 'spamc'
+  watchspam: '/var/spool/mail/testspam'
+
+publicinbox::config::lists:
+  example1:
+    address:
+      - 'example1@example.com'
+      - 'example2@example.com'
+    mainrepo: '/var/lib/public-inbox/example1.git'
+    url:
+      - 'https://example.com/example1'
+    newsgroup: 'com.example.example1'
+
+  example2:
+    address: 'example2@example.com'
+    mainrepo: '/var/lib/public-inbox/example2.git'
+    url:
+      - 'https://example.com/example2'
+    newsgroup: 'com.example.example2'
+    watch: '/var/spool/mail/example2'
+    watchheader: 'List-Id:<example2.example.com>'
+
+# vim: ts=2 sw=2 sts=2 et :

@@ -1,0 +1,10 @@
+# MANAGED BY PUPPET
+[Unit]
+Description = public-inbox-nntpd socket
+
+[Socket]
+ListenStream = <%= @nntpd_listen_port %>
+Service = public-inbox-nntpd@1.service
+
+[Install]
+WantedBy = sockets.target

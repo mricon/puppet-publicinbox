@@ -1,0 +1,26 @@
+# MANAGED BY PUPPET
+
+[Unit]
+Description = public-inbox PSGI server %i
+Wants = public-inbox-httpd.socket
+After = public-inbox-httpd.socket
+
+[Service]
+Environment = PI_CONFIG=<%= @config %> \
+              PATH=/usr/local/bin:/usr/bin:/bin \
+              PERL_INLINE_DIRECTORY=<%= @run_dir %>
+
+LimitNOFILE = 30000
+ExecStart = /usr/local/bin/public-inbox-httpd \
+            -1 <%= @log_dir %>/httpd.out.log
+StandardError = syslog
+Sockets = public-inbox-httpd.socket
+KillSignal = SIGQUIT
+User = <%= @runuser %>
+Group = <%= @rungroup %>
+ExecReload = /bin/kill -HUP $MAINPID
+TimeoutStopSec = 86400
+KillMode = process
+
+[Install]
+WantedBy = multi-user.target

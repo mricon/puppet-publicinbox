@@ -1,0 +1,11 @@
+# MANAGED BY PUPPET
+
+[Unit]
+Description = public-inbox-httpd socket
+
+[Socket]
+ListenStream = <%= @httpd_listen_port %>
+Service = public-inbox-httpd@1.service
+
+[Install]
+WantedBy = sockets.target
