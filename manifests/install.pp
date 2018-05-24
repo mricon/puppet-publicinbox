@@ -115,39 +115,40 @@ class publicinbox::install inherits publicinbox {
     refreshonly => true,
   }
 
-  if $publicinbox::manage_group {
-    group { $publicinbox::rungroup:
+  if $publicinbox::manage_user_group {
+    group { $publicinbox::daemon_group:
       ensure => present,
     }
-  }
-  if $publicinbox::manage_user {
-    user { $publicinbox::runuser:
+    user { $publicinbox::daemon_user:
       ensure => present,
-      gid    => $publicinbox::rungroup,
+      gid    => $publicinbox::daemon_group,
       home   => $publicinbox::var_dir,
       shell  => '/sbin/nologin',
     }
   }
 
   file { $publicinbox::var_dir:
-    ensure => directory,
-    owner  => 'root',
-    group  => $publicinbox::rungroup,
-    mode   => '0775',
+    ensure  => directory,
+    owner   => $publicinbox::var_dir_owner,
+    group   => $publicinbox::var_dir_group,
+    mode    => $publicinbox::var_dir_mode,
+    seltype => $publicinbox::var_dir_seltype,
   }
 
   file { $publicinbox::log_dir:
-    ensure => directory,
-    owner  => 'root',
-    group  => $publicinbox::rungroup,
-    mode   => '0770',
+    ensure  => directory,
+    owner   => 'root',
+    group   => $publicinbox::daemon_group,
+    mode    => '0770',
+    seltype => $publicinbox::log_dir_seltype,
   }
 
   file { $publicinbox::config_dir:
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
+    ensure  => directory,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    seltype => $publicinbox::config_dir_seltype,
   }
 
   file { '/etc/systemd/system/public-inbox-httpd.socket':
@@ -175,7 +176,7 @@ class publicinbox::install inherits publicinbox {
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => "d ${run_dir} 0770 root ${publicinbox::rungroup}\n",
+      content => "d ${run_dir} 0770 root ${publicinbox::daemon_group}\n",
       notify  => Exec['publicinbox-systemd-tmpfiles-create'],
     }
 

@@ -62,25 +62,6 @@ Location where the public-inbox tree should be cloned.
 
 Default: `/usr/local/share/public-inbox`
 
-#### `config_dir`
-
-Where the configuration files should be kept.
-
-Default: `/etc/public-inbox`
-
-#### `var_dir`
-
-Where the local data should be kept (git trees and indexes). The daemons are
-not expected to write to it.
-
-Default: `/var/lib/public-inbox`
-
-#### `log_dir`
-
-Where the logs will go.
-
-Default: `/var/log/public-inbox`
-
 #### `source_repo`
 
 Where to clone the public-inbox tree from. If you must carry local changes that
@@ -93,6 +74,82 @@ Default: https://public-inbox.org
 Whether to run "make test" after "make".
 
 Default: `false`
+
+#### `config_dir`
+#### `config_dir_seltype`
+
+Where the configuration files should be kept.
+
+Defaults:
+```yaml
+publicinbox::config_dir: '/etc/public-inbox'
+publicinbox::config_dir_seltype: undef
+```
+
+
+The SELinux type of the config dir, if you want to specify something other
+than the default.
+
+Default: `undef`
+
+#### `var_dir`
+#### `var_dir_owner`
+#### `var_dir_group`
+#### `var_dir_mode`
+#### `var_dir_seltype`
+
+Where the local data should be kept (git trees and indexes). The daemons are
+not expected to write to it.
+
+Defaults:
+```yaml
+publicinbox::var_dir: '/var/lib/public-inbox'
+publicinbox::var_dir_owner: 'root'
+publicinbox::var_dir_group: 'root'
+publicinbox::var_dir_mode: '0775'
+publicinbox::seltype: undef
+```
+
+#### `log_dir`
+#### `log_dir_seltype`
+
+Where the logs will go.
+
+Defaults:
+```yaml
+publicinbox::log_dir: '/var/log/public-inbox'
+publicinbox::log_dir_seltype: undef
+```
+
+#### `manage_user_group`
+#### `damon_user`
+#### `daemon_group`
+
+User/group settings for the public-inbox listening daemons.
+
+Defaults:
+```yaml
+publicinbox::manage_user_group: true
+publicinbox::daemon_user: 'publicinbox'
+publicinbox::daemon_group: 'publicinbox'
+```
+
+#### `enable_httpd`
+#### `httpd_listen_port`
+#### `enable_nntpd`
+#### `nntpd_listen_port`
+
+Whether to enable the daemons and on which port to run them.
+The default httpd port is 8080 because it is assumed you will be running a
+reverse-proxy in front of it.
+
+Defaults:
+```yaml
+publicinbox::enable_httpd: true
+publicinbox::httpd_listen_port: 8080
+publicinbox::enable_nntpd: true
+publicinbox::nntpd_listen_port: 119
+```
 
 ### Config file parameters
 

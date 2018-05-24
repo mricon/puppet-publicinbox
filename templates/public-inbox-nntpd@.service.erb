@@ -16,8 +16,8 @@ ExecStart = /usr/local/bin/public-inbox-nntpd \
 StandardError = syslog
 Sockets = public-inbox-nntpd.socket
 KillSignal = SIGQUIT
-User = <%= @runuser %>
-Group = <%= @rungroup %>
+User = <%= @daemon_user %>
+Group = <%= @daemon_group %>
 ExecReload = /bin/kill -HUP $MAINPID
 TimeoutStopSec = 86400
 KillMode = process

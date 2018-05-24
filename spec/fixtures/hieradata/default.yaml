@@ -1,6 +1,10 @@
 ---
-publicinbox::runuser: 'pitestuser'
-publicinbox::rungroup: 'pitestgroup'
+publicinbox::daemon_user: 'pitestuser'
+publicinbox::daemon_group: 'pitestgroup'
+
+publicinbox::var_dir_owner: 'archiver'
+publicinbox::var_dir_group: 'pitestgroup'
+publicinbox::var_dir_mode: '0750'
 
 publicinbox::make_test: true
 
