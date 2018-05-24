@@ -17,7 +17,7 @@ class publicinbox::params {
   $source_repo         = 'https://public-inbox.org'
   $make_test           = false
   $manage_user_group   = true
-  $demon_user          = 'publicinbox'
+  $daemon_user         = 'publicinbox'
   $daemon_group        = 'publicinbox'
   $enable_httpd        = true
   $httpd_listen_port   = 8080
