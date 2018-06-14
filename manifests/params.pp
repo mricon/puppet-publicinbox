@@ -23,4 +23,6 @@ class publicinbox::params {
   $httpd_listen_port   = 8080
   $enable_nntpd        = true
   $nntpd_listen_port   = 119
+  $enable_watch        = false
+  $watch_user          = 'piwatch'
 }

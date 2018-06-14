@@ -25,6 +25,8 @@ class publicinbox (
   Integer                  $httpd_listen_port   = $publicinbox::params::httpd_listen_port,
   Boolean                  $enable_nntpd        = $publicinbox::params::enable_nntpd,
   Integer                  $nntpd_listen_port   = $publicinbox::params::nntpd_listen_port,
+  Boolean                  $enable_watch        = $publicinbox::params::enable_watch,
+  String                   $watch_user          = $publicinbox::params::watch_user,
 
 ) inherits publicinbox::params {
 

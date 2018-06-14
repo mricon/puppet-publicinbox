@@ -51,6 +51,7 @@ class publicinbox::install inherits publicinbox {
     'Email::MIME',
     'Email::MIME::ContentType',
     'Encode::MIME::Header',
+    'Socket6',
     'Plack',
     'Plack::Middleware::ReverseProxy',
     'Plack::Middleware::Deflater',
@@ -125,6 +126,14 @@ class publicinbox::install inherits publicinbox {
       home   => $publicinbox::var_dir,
       shell  => '/sbin/nologin',
     }
+    if $publicinbox::enable_watch {
+      user { $publicinbox::watch_user:
+        ensure => present,
+        gid    => $publicinbox::daemon_group,
+        home   => $publicinbox::var_dir,
+        shell  => '/sbin/nologin',
+      }
+    }
   }
 
   file { $publicinbox::var_dir:
@@ -137,9 +146,9 @@ class publicinbox::install inherits publicinbox {
 
   file { $publicinbox::log_dir:
     ensure  => directory,
-    owner   => 'root',
+    owner   => $publicinbox::daemon_user,
     group   => $publicinbox::daemon_group,
-    mode    => '0770',
+    mode    => '0700',
     seltype => $publicinbox::log_dir_seltype,
   }
 
@@ -257,5 +266,30 @@ class publicinbox::install inherits publicinbox {
   service { 'public-inbox-nntpd.socket':
     ensure => $nntpd_ensure,
     enable => $nntpd_enable,
+  }
+
+  file { '/etc/systemd/system/public-inbox-watch.service':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/public-inbox-watch.service.erb"),
+    require => [
+      File[$publicinbox::config_dir],
+    ],
+    notify  => Exec['publicinbox-systemd-reload'],
+  }
+
+  if $publicinbox::enable_watch {
+    $watch_enable = true
+    $watch_ensure = 'running'
+  } else {
+    $watch_enable = false
+    $watch_ensure = 'stopped'
+  }
+
+  service { 'public-inbox-watch.service':
+    ensure => $watch_ensure,
+    enable => $watch_enable,
   }
 }
