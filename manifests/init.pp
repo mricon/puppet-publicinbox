@@ -23,8 +23,10 @@ class publicinbox (
   String                   $daemon_group        = $publicinbox::params::daemon_group,
   Boolean                  $enable_httpd        = $publicinbox::params::enable_httpd,
   Integer                  $httpd_listen_port   = $publicinbox::params::httpd_listen_port,
+  Optional[String]         $httpd_daemon_flags  = $publicinbox::params::httpd_daemon_flags,
   Boolean                  $enable_nntpd        = $publicinbox::params::enable_nntpd,
   Integer                  $nntpd_listen_port   = $publicinbox::params::nntpd_listen_port,
+  Optional[String]         $nntpd_daemon_flags  = $publicinbox::params::nntpd_daemon_flags,
   Boolean                  $enable_watch        = $publicinbox::params::enable_watch,
   String                   $watch_user          = $publicinbox::params::watch_user,
 
