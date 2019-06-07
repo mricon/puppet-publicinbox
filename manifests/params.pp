@@ -21,8 +21,10 @@ class publicinbox::params {
   $daemon_group        = 'publicinbox'
   $enable_httpd        = true
   $httpd_listen_port   = 8080
+  $httpd_daemon_flags  = undef
   $enable_nntpd        = true
   $nntpd_listen_port   = 119
+  $nntpd_daemon_flags  = undef
   $enable_watch        = false
   $watch_user          = 'piwatch'
 }
