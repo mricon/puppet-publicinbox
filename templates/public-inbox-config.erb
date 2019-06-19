@@ -1,6 +1,6 @@
 # MANAGED BY PUPPET
-<% if @nntpserver -%>
 [publicinbox]
+<% if @nntpserver -%>
 <% if @nntpserver.class == Array -%>
 <% @nntpserver.each do |srvaddr| -%>
     nntpserver=<%= srvaddr %>
@@ -8,6 +8,21 @@
 <% else -%>
     nntpserver=<%= @nntpserver %>
 <% end -%>
+<% end -%>
+<% if @css -%>
+<% if @css.class == Array -%>
+<% @css.each do |cssopts| -%>
+    css=<%= cssopts %>
+<% end -%>
+<% else -%>
+    css=<%= @css %>
+<% end -%>
+<% end -%>
+<% if @mailEditor -%>
+    mailEditor=<%= @mailEditor %>
+<% end -%>
+<% if @wwwlisting -%>
+    wwwlisting=<%= @wwwlisting %>
 <% end -%>
 
 <% @lists.keys.sort.each do |listname| -%>
