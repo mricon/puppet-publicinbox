@@ -6,7 +6,7 @@ class publicinbox::config (
 
   Optional[Array]          $nntpserver               = undef,
   Optional[Array]          $css                      = undef,
-  Optional[String]         $mailEditor               = undef,
+  Optional[String]         $maileditor               = undef,
   Optional[String]         $wwwlisting               = undef,
   Optional[Hash]           $watch                    = undef,
 
