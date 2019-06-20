@@ -33,6 +33,8 @@ describe 'publicinbox', :type => 'class' do
           .with_content(/\[publicinbox\]/)
           .with_content(/nntpserver=nntp:\/\/bupkes\.example\.com/)
           .with_content(/nntpserver=nntp:\/\/bogus\.example\.com/)
+          .with_content(/css=\/dev\/null title=default/)
+          .with_content(/css=\/dev\/null title=bupkes media='screen'/)
           .with_content(/\[publicinbox "example1"\]/)
           .with_content(/address=example1@example.com/)
           .with_content(/address=example2@example.com/)

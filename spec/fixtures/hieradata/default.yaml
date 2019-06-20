@@ -11,6 +11,9 @@ publicinbox::make_test: true
 publicinbox::config::nntpserver:
   - 'nntp://bupkes.example.com'
   - 'nntp://bogus.example.com'
+publicinbox::config::css:
+  - "/dev/null title=default"
+  - "/dev/null title=bupkes media='screen'"
 
 publicinbox::config::watch:
   spamcheck: 'spamc'

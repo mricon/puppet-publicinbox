@@ -5,6 +5,9 @@ class publicinbox::config (
   Hash                     $lists                    = undef,
 
   Optional[Array]          $nntpserver               = undef,
+  Optional[Array]          $css                      = undef,
+  Optional[String]         $mailEditor               = undef,
+  Optional[String]         $wwwlisting               = undef,
   Optional[Hash]           $watch                    = undef,
 
 ) inherits publicinbox {
