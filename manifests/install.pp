@@ -42,6 +42,7 @@ class publicinbox::install inherits publicinbox {
     'expat-devel',
     'libxml2-devel',
     'gcc-c++',
+    'perl-Plack',
   ]:
     ensure => installed,
   }
@@ -52,7 +53,6 @@ class publicinbox::install inherits publicinbox {
     'Email::MIME::ContentType',
     'Encode::MIME::Header',
     'Socket6',
-    'Plack',
     'Plack::Middleware::ReverseProxy',
     'Plack::Middleware::Deflater',
     'URI::Escape',
@@ -71,6 +71,7 @@ class publicinbox::install inherits publicinbox {
     require => [
       Package['xapian-core'],
       Package['xapian-core-devel'],
+      Package['perl-Plack'],
       Package['gcc-c++'],
       Package['expat-devel'],
       Package['libxml2-devel'],
