@@ -13,7 +13,7 @@ StandardOutput = syslog
 StandardError = syslog
 ExecReload = /bin/kill -HUP $MAINPID
 # this user must have read access to Maildirs it watches
-User = <%= @watch_user %>
+User = <%= @var_dir_owner %>
 KillMode = process
 
 [Install]

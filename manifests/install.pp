@@ -117,7 +117,7 @@ class publicinbox::install inherits publicinbox {
     refreshonly => true,
   }
 
-  if $publicinbox::manage_user_group {
+  if $publicinbox::manage_daemon_ug {
     group { $publicinbox::daemon_group:
       ensure => present,
     }
@@ -127,13 +127,16 @@ class publicinbox::install inherits publicinbox {
       home   => $publicinbox::var_dir,
       shell  => '/sbin/nologin',
     }
-    if $publicinbox::enable_watch {
-      user { $publicinbox::watch_user:
-        ensure => present,
-        gid    => $publicinbox::daemon_group,
-        home   => $publicinbox::var_dir,
-        shell  => '/sbin/nologin',
-      }
+  }
+  if $publicinbox::manage_var_ug {
+    group { $publicinbox::var_dir_group:
+      ensure => present,
+    }
+    user { $publicinbox::var_dir_owner:
+      ensure => present,
+      gid    => $publicinbox::var_dir_group,
+      home   => $publicinbox::var_dir,
+      shell  => '/sbin/nologin',
     }
   }
 

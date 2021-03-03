@@ -18,7 +18,6 @@ class publicinbox (
   String                   $source_repo         = $publicinbox::params::source_repo,
   Boolean                  $make_test           = $publicinbox::params::make_test,
 
-  Boolean                  $manage_user_group   = $publicinbox::params::manage_user_group,
   String                   $daemon_user         = $publicinbox::params::daemon_user,
   String                   $daemon_group        = $publicinbox::params::daemon_group,
   Boolean                  $enable_httpd        = $publicinbox::params::enable_httpd,
@@ -28,7 +27,9 @@ class publicinbox (
   Integer                  $nntpd_listen_port   = $publicinbox::params::nntpd_listen_port,
   Optional[String]         $nntpd_daemon_flags  = $publicinbox::params::nntpd_daemon_flags,
   Boolean                  $enable_watch        = $publicinbox::params::enable_watch,
-  String                   $watch_user          = $publicinbox::params::watch_user,
+
+  Boolean                  $manage_daemon_ug    = $publicinbox::params::manage_daemon_ug,
+  Boolean                  $manage_var_ug       = $publicinbox::params::manage_var_ug,
 
 ) inherits publicinbox::params {
 

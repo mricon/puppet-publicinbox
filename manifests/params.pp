@@ -9,14 +9,15 @@ class publicinbox::params {
   $config_dir_seltype  = undef
   $var_dir             = '/var/lib/public-inbox'
   $var_dir_seltype     = undef
-  $var_dir_owner       = 'root'
-  $var_dir_group       = 'root'
+  $var_dir_owner       = 'archiver'
+  $var_dir_group       = 'archiver'
   $var_dir_mode        = '0775'
   $log_dir             = '/var/log/public-inbox'
   $log_dir_seltype     = undef
+  $log_dir_owner       = 'root'
+  $log_dir_group       = 'root'
   $source_repo         = 'https://public-inbox.org'
   $make_test           = false
-  $manage_user_group   = true
   $daemon_user         = 'publicinbox'
   $daemon_group        = 'publicinbox'
   $enable_httpd        = true
@@ -26,5 +27,7 @@ class publicinbox::params {
   $nntpd_listen_port   = 119
   $nntpd_daemon_flags  = undef
   $enable_watch        = false
-  $watch_user          = 'piwatch'
+
+  $manage_daemon_ug    = true
+  $manage_var_ug       = true
 }

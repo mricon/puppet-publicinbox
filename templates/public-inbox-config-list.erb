@@ -1,0 +1,11 @@
+
+[publicinbox "<%= @listname %>"]
+<% @listoptions.each do |paramname, paramvalue| -%>
+<% if paramvalue.class == Array -%>
+<% paramvalue.each do |_paramvalue| -%>
+    <%= paramname %>=<%= _paramvalue %>
+<% end -%>
+<% else -%>
+    <%= paramname %>=<%= paramvalue %>
+<% end -%>
+<% end -%>

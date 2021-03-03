@@ -24,17 +24,9 @@
 <% if @wwwlisting -%>
     wwwlisting=<%= @wwwlisting %>
 <% end -%>
-
-<% @lists.keys.sort.each do |listname| -%>
-[publicinbox "<%= listname %>"]
-<% @lists[listname].each do |paramname, paramvalue| -%>
-<% if paramvalue.class == Array -%>
-<% paramvalue.each do |_paramvalue| -%>
-    <%= paramname %>=<%= _paramvalue %>
-<% end -%>
-<% else -%>
+<% if @global -%>
+<% @global.each do |paramname, paramvalue| -%>
     <%= paramname %>=<%= paramvalue %>
-<% end -%>
 <% end -%>
 <% end -%>
 
