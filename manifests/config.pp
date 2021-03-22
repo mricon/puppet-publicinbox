@@ -57,7 +57,7 @@ class publicinbox::config (
 
   if $::publicinbox::enable_nntpd {
     exec { 'publicinbox-systemd-nudge-nntpd':
-      command     => 'systemctl restart public-inbox-nntpd@*.service',
+      command     => 'systemctl reload public-inbox-nntpd@*.service',
       path        => ['/usr/bin', '/bin'],
       refreshonly => true,
     }
