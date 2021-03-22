@@ -43,7 +43,7 @@ class publicinbox::config (
 
   if $::publicinbox::enable_httpd {
     exec { 'publicinbox-systemd-nudge-httpd':
-      command     => 'systemctl kill -s SIGHUP public-inbox-httpd@1.service',
+      command     => 'systemctl restart public-inbox-httpd@*.service',
       path        => ['/usr/bin', '/bin'],
       refreshonly => true,
     }
@@ -57,7 +57,7 @@ class publicinbox::config (
 
   if $::publicinbox::enable_nntpd {
     exec { 'publicinbox-systemd-nudge-nntpd':
-      command     => 'systemctl kill -s SIGHUP public-inbox-nntpd@1.service',
+      command     => 'systemctl restart public-inbox-nntpd@*.service',
       path        => ['/usr/bin', '/bin'],
       refreshonly => true,
     }
@@ -71,7 +71,7 @@ class publicinbox::config (
 
   if $::publicinbox::enable_watch {
     exec { 'publicinbox-systemd-nudge-watch':
-      command     => 'systemctl kill -s SIGHUP public-inbox-watch.service',
+      command     => 'systemctl restart public-inbox-watch.service',
       path        => ['/usr/bin', '/bin'],
       refreshonly => true,
     }
