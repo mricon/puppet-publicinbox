@@ -120,23 +120,27 @@ class publicinbox::install inherits publicinbox {
   if $publicinbox::manage_daemon_ug {
     group { $publicinbox::daemon_group:
       ensure => present,
+      system => true,
     }
     user { $publicinbox::daemon_user:
       ensure => present,
       gid    => $publicinbox::daemon_group,
       home   => $publicinbox::var_dir,
       shell  => '/sbin/nologin',
+      system => true,
     }
   }
   if $publicinbox::manage_var_ug {
     group { $publicinbox::var_dir_group:
       ensure => present,
+      system => true,
     }
     user { $publicinbox::var_dir_owner:
       ensure => present,
       gid    => $publicinbox::var_dir_group,
       home   => $publicinbox::var_dir,
       shell  => '/sbin/nologin',
+      system => true,
     }
   }
 
