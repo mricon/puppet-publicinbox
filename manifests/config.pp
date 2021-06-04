@@ -17,7 +17,7 @@ class publicinbox::config (
   concat::fragment { 'publicinbox_config_preamble':
     target  => $config,
     content => template("${module_name}/public-inbox-config-preamble.erb"),
-    order   => 10,
+    order   => 100,
   }
 
   if $lists {
@@ -87,10 +87,15 @@ class publicinbox::config (
 define publicinbox::config::list($listoptions, $init_if_missing=false) {
   $config = "${publicinbox::config_dir}/config"
   $listname = $name
+  if $listoptions['priority'] {
+    $order = $listoptions['priority']
+  } else {
+    $order = 1
+  }
   concat::fragment { "publicinbox_list_${name}":
     target  => $config,
     content => template("${module_name}/public-inbox-config-list.erb"),
-    order   => 1,
+    order   => $order,
   }
   if $init_if_missing {
     if $listoptions['indexlevel'] {
