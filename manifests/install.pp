@@ -36,46 +36,13 @@ class publicinbox::install inherits publicinbox {
     notify   => Exec['publicinbox-perl-Makefile.PL'],
   }
 
-  package { [
-    'xapian-core',
-    'xapian-core-devel',
-    'expat-devel',
-    'libxml2-devel',
-    'gcc-c++',
-    'perl-Plack',
-  ]:
+  package { $publicinbox::os_packages:
     ensure => installed,
   }
 
-  cpanm { [
-    'Date::Parse',
-    'Email::MIME',
-    'Email::MIME::ContentType',
-    'Encode::MIME::Header',
-    'Socket6',
-    'Plack::Middleware::ReverseProxy',
-    'Plack::Middleware::Deflater',
-    'URI::Escape',
-    'Search::Xapian',
-    'IO::Compress::Gzip',
-    'DBI',
-    'DBD::SQLite',
-    'Danga::Socket',
-    'Net::Server',
-    'Filesys::Notify::Simple',
-    'Inline::C',
-    'IPC::Run',
-    'XML::Feed',
-  ]:
+  cpanm { $publicinbox::cpanm_packages:
     ensure  => present,
-    require => [
-      Package['xapian-core'],
-      Package['xapian-core-devel'],
-      Package['perl-Plack'],
-      Package['gcc-c++'],
-      Package['expat-devel'],
-      Package['libxml2-devel'],
-    ],
+    require => Package[$publicinbox::os_packages],
     before  => Exec['publicinbox-perl-Makefile.PL'],
   }
 

@@ -30,4 +30,38 @@ class publicinbox::params {
 
   $manage_daemon_ug    = true
   $manage_var_ug       = true
+
+  $os_packages         = [
+      'xapian-core',
+      'xapian-core-devel',
+      'expat-devel',
+      'libxml2-devel',
+      'gcc-c++',
+      'perl-Plack',
+  ]
+  $cpanm_packages      = [
+      'Date::Parse',
+      'Email::MIME',
+      'Email::MIME::ContentType',
+      'Email::Address::XS',
+      'Encode::MIME::Header',
+      'Parse::RecDescent',
+      'BSD::Resource',
+      'Plack::Middleware::ReverseProxy',
+      'Plack::Middleware::Deflater',
+      'URI::Escape',
+      'Search::Xapian',
+      'IO::Compress::Gzip',
+      'DBI',
+      'DBD::SQLite',
+      'Danga::Socket',
+      'Net::Server',
+      'Filesys::Notify::Simple',
+      'Inline::C',
+      'IPC::Run',
+      'XML::Feed',
+      'Linux::Inotify2',
+      'Mail::IMAPClient',
+      'Mail::IMAPClient::BodyStructure',
+  ]
 }

@@ -31,6 +31,9 @@ class publicinbox (
   Boolean                  $manage_daemon_ug    = $publicinbox::params::manage_daemon_ug,
   Boolean                  $manage_var_ug       = $publicinbox::params::manage_var_ug,
 
+  Array                    $os_packages         = $publicinbox::params::os_packages,
+  Array                    $cpanm_packages      = $publicinbox::params::cpanm_packages,
+
 ) inherits publicinbox::params {
 
   anchor { "${module_name}::begin": }
