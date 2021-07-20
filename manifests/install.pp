@@ -129,9 +129,9 @@ class publicinbox::install inherits publicinbox {
 
   file { $publicinbox::config_dir:
     ensure  => directory,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
+    owner   => $publicinbox::config_dir_owner,
+    group   => $publicinbox::config_dir_group,
+    mode    => $publicinbox::config_dir_mode,
     seltype => $publicinbox::config_dir_seltype,
   }
 
@@ -164,7 +164,7 @@ class publicinbox::install inherits publicinbox {
       notify  => Exec['publicinbox-systemd-tmpfiles-create'],
     }
 
-  $config = "${publicinbox::config_dir}/config"
+  $config = $publicinbox::config_file
 
   file { '/etc/systemd/system/public-inbox-httpd@.service':
     ensure  => present,

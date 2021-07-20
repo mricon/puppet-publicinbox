@@ -7,6 +7,14 @@ class publicinbox::params {
   $install_dir         = '/usr/local/share/public-inbox'
   $config_dir          = '/etc/public-inbox'
   $config_dir_seltype  = undef
+  $config_dir_owner    = 'root'
+  $config_dir_group    = 'root'
+  $config_dir_mode     = '0755'
+  $config_file         = "${config_dir}/config"
+  $manage_config_file  = true
+  $config_file_owner   = $config_dir_owner
+  $config_file_group   = $config_dir_group
+  $config_file_mode    = '0644'
   $var_dir             = '/var/lib/public-inbox'
   $var_dir_seltype     = undef
   $var_dir_owner       = 'archiver'
