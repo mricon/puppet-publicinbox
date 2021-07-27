@@ -1,0 +1,10 @@
+[Unit]
+Description=HUPs public-inbox services on config change
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/public-inbox-reload.sh
+
+[Install]
+WantedBy=multi-user.target

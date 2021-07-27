@@ -15,11 +15,11 @@ ExecStart = /usr/local/bin/public-inbox-httpd <%= @httpd_daemon_flags %>\
             -1 <%= @log_dir %>/httpd.out.log
 StandardError = syslog
 Sockets = public-inbox-httpd.socket
+NonBlocking = true
 KillSignal = SIGQUIT
 User = <%= @daemon_user %>
 Group = <%= @daemon_group %>
 ExecReload = /bin/kill -HUP $MAINPID
-TimeoutStopSec = 86400
 KillMode = process
 
 [Install]

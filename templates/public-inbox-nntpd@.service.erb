@@ -15,11 +15,11 @@ ExecStart = /usr/local/bin/public-inbox-nntpd <%= @nntpd_daemon_flags %>\
             -1 <%= @log_dir %>/nntpd.out.log
 StandardError = syslog
 Sockets = public-inbox-nntpd.socket
+NonBlocking = true
 KillSignal = SIGQUIT
 User = <%= @daemon_user %>
 Group = <%= @daemon_group %>
 ExecReload = /bin/kill -HUP $MAINPID
-TimeoutStopSec = 86400
 KillMode = process
 
 [Install]

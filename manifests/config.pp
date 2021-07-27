@@ -13,6 +13,8 @@ class publicinbox::config (
 
 ) inherits publicinbox {
   if $publicinbox::manage_config_file {
+    $config_watcher_enable = false
+    $config_watcher_ensure = 'stopped'
     concat::fragment { 'publicinbox_config_preamble':
       target  => $publicinbox::config_file,
       content => template("${module_name}/public-inbox-config-preamble.erb"),
@@ -28,59 +30,27 @@ class publicinbox::config (
     }
 
     concat { $publicinbox::config_file:
-      ensure  => present,
-      owner   => $publicinbox::config_file_owner,
-      group   => $publicinbox::config_file_group,
-      mode    => $publicinbox::config_file_mode,
-      # Socket-based services make it a bit tricky to do this sanely with puppet
-      notify  => [
-        Exec['publicinbox-systemd-nudge-httpd'],
-        Exec['publicinbox-systemd-nudge-nntpd'],
-        Exec['publicinbox-systemd-nudge-watch'],
-      ],
+      ensure => present,
+      owner  => $publicinbox::config_file_owner,
+      group  => $publicinbox::config_file_group,
+      mode   => $publicinbox::config_file_mode,
+      notify => Exec['public-inbox-reload.sh'],
     }
 
-    if $::publicinbox::enable_httpd {
-      exec { 'publicinbox-systemd-nudge-httpd':
-        command     => 'systemctl restart public-inbox-httpd@*.service',
-        path        => ['/usr/bin', '/bin'],
-        refreshonly => true,
-      }
-    } else {
-      exec { 'publicinbox-systemd-nudge-httpd':
-        command     => '/bin/true',
-        path        => ['/usr/bin', '/bin'],
-        refreshonly => true,
-      }
+    exec { 'public-inbox-reload.sh':
+      command     => '/usr/local/bin/public-inbox-reload.sh',
+      path        => ['/usr/bin', '/bin'],
+      refreshonly => true,
+      require     => File['/usr/local/bin/public-inbox-reload.sh'],
     }
+  } else {
+    $config_watcher_enable = true
+    $config_watcher_ensure = 'running'
+  }
 
-    if $::publicinbox::enable_nntpd {
-      exec { 'publicinbox-systemd-nudge-nntpd':
-        command     => 'systemctl reload public-inbox-nntpd@*.service',
-        path        => ['/usr/bin', '/bin'],
-        refreshonly => true,
-      }
-    } else {
-      exec { 'publicinbox-systemd-nudge-nntpd':
-        command     => '/bin/true',
-        path        => ['/usr/bin', '/bin'],
-        refreshonly => true,
-      }
-    }
-
-    if $::publicinbox::enable_watch {
-      exec { 'publicinbox-systemd-nudge-watch':
-        command     => 'systemctl restart public-inbox-watch.service',
-        path        => ['/usr/bin', '/bin'],
-        refreshonly => true,
-      }
-    } else {
-      exec { 'publicinbox-systemd-nudge-watch':
-        command     => '/bin/true',
-        path        => ['/usr/bin', '/bin'],
-        refreshonly => true,
-      }
-    }
+  service { 'public-inbox-config-watcher.path':
+    ensure => $config_watcher_ensure,
+    enable => $config_watcher_enable,
   }
 }
 

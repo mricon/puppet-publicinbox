@@ -4,6 +4,8 @@
 class publicinbox::install inherits publicinbox {
   include ::cpanm
 
+  $config = $publicinbox::config_file
+
   if $publicinbox::manage_git {
     include ::git
   }
@@ -135,6 +137,32 @@ class publicinbox::install inherits publicinbox {
     seltype => $publicinbox::config_dir_seltype,
   }
 
+  file { '/usr/local/bin/public-inbox-reload.sh':
+    ensure => present,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+    source => "puppet:///modules/${module_name}/public-inbox-reload.sh",
+  }
+
+  file { '/etc/systemd/system/public-inbox-config-watcher.path':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/public-inbox-config-watcher.path.erb"),
+    notify  => Exec['publicinbox-systemd-reload'],
+  }
+
+  file { '/etc/systemd/system/public-inbox-config-watcher.service':
+    ensure => present,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => "puppet:///modules/${module_name}/public-inbox-config-watcher.service",
+    notify => Exec['publicinbox-systemd-reload'],
+  }
+
   file { '/etc/systemd/system/public-inbox-httpd.socket':
     ensure  => present,
     owner   => 'root',
@@ -163,8 +191,6 @@ class publicinbox::install inherits publicinbox {
       content => "d ${run_dir} 0770 root ${publicinbox::daemon_group}\n",
       notify  => Exec['publicinbox-systemd-tmpfiles-create'],
     }
-
-  $config = $publicinbox::config_file
 
   file { '/etc/systemd/system/public-inbox-httpd@.service':
     ensure  => present,
