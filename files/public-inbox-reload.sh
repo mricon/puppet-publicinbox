@@ -1,7 +1,7 @@
 #!/bin/sh
-# Tell public-inbox services to re-read the config file by sending HUPs to their main PIDs
-PI_SVCS="public-inbox-httpd public-inbox-nntpd public-inbox-imapd public-inbox-watch"
-for PI_SVC in $PI_SVCS; do
-    /bin/pkill -HUP -P1 -f $PI_SVC
+# Reload public-inbox services if they are running
+PI_UNITS="public-inbox-httpd@1 public-inbox-nntpd@1 public-inbox-watch"
+for PI_UNIT in $PI_UNITS; do
+    /bin/systemctl -q is-active $PI_UNIT && /bin/systemctl reload $PI_UNIT
 done
 exit 0
