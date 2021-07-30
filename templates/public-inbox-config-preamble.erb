@@ -30,6 +30,15 @@
 <% end -%>
 <% end -%>
 
+<% if @extindex -%>
+<% @extindex.each do |einame, eiopts| -%>
+[extindex "<%= einame %>"]
+<% eiopts.each do |eiparam, eivalue| -%>
+  <%= eiparam %>=<%= eivalue %>
+<% end -%>
+<% end -%>
+<% end -%>
+
 <% if @watch -%>
 [publicinboxwatch]
 <% @watch.each do |paramname, paramvalue| -%>
