@@ -59,7 +59,7 @@ class publicinbox::config (
         require => File[$publicinbox::config_dir],
       }
       exec { 'public-inbox-raw-include':
-        command => "git config --file ${publicinbox::config_file} include.path ${publicinbox::config_dir}/config.include",
+        command => "git config --file ${publicinbox::config_file} --add include.path ${publicinbox::config_dir}/config.include",
         unless  => "git config --file ${publicinbox::config_file} --get-all include.path | egrep -q ^${publicinbox::config_dir}/config.include$",
         path    => ['/usr/bin', '/bin'],
         require => File[$publicinbox::config_dir],
