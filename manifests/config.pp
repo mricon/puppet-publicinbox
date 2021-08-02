@@ -10,9 +10,16 @@ class publicinbox::config (
   Optional[String]         $wwwlisting               = undef,
   Optional[Hash]           $watch                    = undef,
   Optional[Hash]           $global                   = undef,
-  Optional[Hash]           $extindex                 = undef,
+  Optional[String]         $unmanaged_raw_include    = undef,
 
 ) inherits publicinbox {
+  exec { 'public-inbox-reload.sh':
+    command     => '/usr/local/bin/public-inbox-reload.sh',
+    path        => ['/usr/bin', '/bin'],
+    refreshonly => true,
+    require     => File['/usr/local/bin/public-inbox-reload.sh'],
+  }
+
   if $publicinbox::manage_config_file {
     $config_watcher_enable = false
     $config_watcher_ensure = 'stopped'
@@ -39,36 +46,25 @@ class publicinbox::config (
       require => File[$publicinbox::config_dir],
     }
 
-    exec { 'public-inbox-reload.sh':
-      command     => '/usr/local/bin/public-inbox-reload.sh',
-      path        => ['/usr/bin', '/bin'],
-      refreshonly => true,
-      require     => File['/usr/local/bin/public-inbox-reload.sh'],
-    }
   } else {
+    if $unmanaged_raw_include {
+      file { "${publicinbox::config_dir}/config.include":
+        ensure  => present,
+        owner   => $publicinbox::config_file_owner,
+        group   => $publicinbox::config_file_group,
+        mode    => $publicinbox::config_file_mode,
+        content => "# MANAGED BY PUPPET\n${unmanaged_raw_include}",
+        notify  => Exec['public-inbox-reload.sh'],
+        require => File[$publicinbox::config_dir],
+      }
+      exec { 'public-inbox-raw-include':
+        command => "git config --file ${publicinbox::config_file} include.path ${publicinbox::config_dir}/config.include",
+        unless  => "git config --file ${publicinbox::config_file} --get-all include.path | egrep -q ^${publicinbox::config_dir}/config.include$",
+        path    => ['/usr/bin', '/bin'],
+        require => File[$publicinbox::config_dir],
+      }
+    }
     # Use git-config to set global options
-    if $global {
-      $global.each |String $gname, $gval| {
-        exec { "public-inbox-set-global-${gname}":
-          command => "git config --file ${publicinbox::config_file} --replace-all publicinbox.${gname} \"${gval}\"",
-          onlyif  => "test `git config --file ${publicinbox::config_file} --get publicinbox.${gname}` != \"${gval}\"",
-          path    => ['/usr/bin', '/bin'],
-          require => File[$publicinbox::config_dir],
-        }
-      }
-    }
-    if $extindex {
-      $extindex.each |String $einame, $eiopts| {
-        $eiopts.each |String $eiparam, $eival| {
-          exec { "public-inbox-set-extindex-${einame}-${eiparam}":
-            command => "git config --file ${publicinbox::config_file} --replace-all extindex.${einame}.${eiparam} \"${eival}\"",
-            onlyif  => "test `git config --file ${publicinbox::config_file} --get extindex.${einame}.${eiparam}` != \"${eival}\"",
-            path    => ['/usr/bin', '/bin'],
-            require => File[$publicinbox::config_dir],
-          }
-        }
-      }
-    }
     $config_watcher_enable = true
     $config_watcher_ensure = 'running'
   }
