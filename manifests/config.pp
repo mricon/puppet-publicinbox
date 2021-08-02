@@ -10,6 +10,7 @@ class publicinbox::config (
   Optional[String]         $wwwlisting               = undef,
   Optional[Hash]           $watch                    = undef,
   Optional[Hash]           $global                   = undef,
+  Optional[Hash]           $extindex                 = undef,
   Optional[String]         $unmanaged_raw_include    = undef,
 
 ) inherits publicinbox {
