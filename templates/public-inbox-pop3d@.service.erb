@@ -1,0 +1,26 @@
+# MANAGED BY PUPPET
+
+[Unit]
+Description = public-inbox POP3 server %i
+Wants = public-inbox-pop3d.socket
+After = public-inbox-pop3d.socket
+
+[Service]
+Environment = PI_CONFIG=<%= @config %> \
+              PATH=/usr/local/bin:/usr/bin:/bin \
+              PERL_INLINE_DIRECTORY=<%= @run_dir %>
+
+LimitNOFILE = 30000
+ExecStart = /usr/local/bin/public-inbox-pop3d <%= @pop3d_daemon_flags %>\
+            -1 <%= @log_dir %>/pop3d.out.log
+StandardError = syslog
+Sockets = public-inbox-pop3d.socket
+NonBlocking = true
+KillSignal = SIGQUIT
+User = <%= @daemon_user %>
+Group = <%= @daemon_group %>
+ExecReload = /bin/kill -HUP $MAINPID
+KillMode = process
+
+[Install]
+WantedBy = multi-user.target

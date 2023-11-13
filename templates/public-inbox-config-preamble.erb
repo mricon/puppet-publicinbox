@@ -24,6 +24,9 @@
 <% if @wwwlisting -%>
     wwwlisting=<%= @wwwlisting %>
 <% end -%>
+<% if @pop3state -%>
+    pop3state=<%= @pop3state %>
+<% end -%>
 <% if @global -%>
 <% @global.each do |paramname, paramvalue| -%>
     <%= paramname %>=<%= paramvalue %>

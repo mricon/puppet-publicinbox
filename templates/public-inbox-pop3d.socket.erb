@@ -1,0 +1,16 @@
+# MANAGED BY PUPPET
+[Unit]
+Description = public-inbox-pop3d socket
+
+[Socket]
+<% if @pop3d_listen_port.class == Array -%>
+<% @pop3d_listen_port.each do |lport| -%>
+ListenStream = <%= lport %>
+<% end -%>
+<% else -%>
+ListenStream = <%= @pop3d_listen_port %>
+<% end -%>
+Service = public-inbox-pop3d@1.service
+
+[Install]
+WantedBy = sockets.target

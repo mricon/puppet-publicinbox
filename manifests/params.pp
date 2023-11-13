@@ -34,6 +34,12 @@ class publicinbox::params {
   $enable_nntpd        = true
   $nntpd_listen_port   = 119
   $nntpd_daemon_flags  = undef
+  $enable_imapd        = false
+  $imapd_listen_port   = 143
+  $imapd_daemon_flags  = undef
+  $enable_pop3d        = false
+  $pop3d_listen_port   = 110
+  $pop3d_daemon_flags  = undef
   $enable_watch        = false
 
   $manage_daemon_ug    = true

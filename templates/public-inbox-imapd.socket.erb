@@ -1,0 +1,16 @@
+# MANAGED BY PUPPET
+[Unit]
+Description = public-inbox-imapd socket
+
+[Socket]
+<% if @imapd_listen_port.class == Array -%>
+<% @imapd_listen_port.each do |lport| -%>
+ListenStream = <%= lport %>
+<% end -%>
+<% else -%>
+ListenStream = <%= @imapd_listen_port %>
+<% end -%>
+Service = public-inbox-imapd@1.service
+
+[Install]
+WantedBy = sockets.target

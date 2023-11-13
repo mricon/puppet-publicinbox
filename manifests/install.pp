@@ -231,6 +231,54 @@ class publicinbox::install inherits publicinbox {
     notify  => Exec['publicinbox-systemd-reload'],
   }
 
+  file { '/etc/systemd/system/public-inbox-imapd.socket':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/public-inbox-imapd.socket.erb"),
+    notify  => Exec['publicinbox-systemd-reload'],
+  }
+
+  file { '/etc/systemd/system/public-inbox-imapd@.service':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/public-inbox-imapd@.service.erb"),
+    require => [
+      File[$publicinbox::config_dir],
+      File[$publicinbox::log_dir],
+      File['/etc/tmpfiles.d/public-inbox.conf'],
+      File['/etc/systemd/system/public-inbox-imapd.socket'],
+    ],
+    notify  => Exec['publicinbox-systemd-reload'],
+  }
+
+  file { '/etc/systemd/system/public-inbox-pop3d.socket':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/public-inbox-pop3d.socket.erb"),
+    notify  => Exec['publicinbox-systemd-reload'],
+  }
+
+  file { '/etc/systemd/system/public-inbox-pop3d@.service':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template("${module_name}/public-inbox-pop3d@.service.erb"),
+    require => [
+      File[$publicinbox::config_dir],
+      File[$publicinbox::log_dir],
+      File['/etc/tmpfiles.d/public-inbox.conf'],
+      File['/etc/systemd/system/public-inbox-pop3d.socket'],
+    ],
+    notify  => Exec['publicinbox-systemd-reload'],
+  }
+
   exec { 'publicinbox-systemd-reload':
     command     => 'systemctl daemon-reload',
     path        => ['/usr/bin', '/bin'],
@@ -267,6 +315,32 @@ class publicinbox::install inherits publicinbox {
   service { 'public-inbox-nntpd.socket':
     ensure => $nntpd_ensure,
     enable => $nntpd_enable,
+  }
+
+  if $publicinbox::enable_imapd {
+    $imapd_enable = true
+    $imapd_ensure = 'running'
+  } else {
+    $imapd_enable = false
+    $imapd_ensure = 'stopped'
+  }
+
+  service { 'public-inbox-imapd.socket':
+    ensure => $imapd_ensure,
+    enable => $imapd_enable,
+  }
+
+  if $publicinbox::enable_pop3d {
+    $pop3d_enable = true
+    $pop3d_ensure = 'running'
+  } else {
+    $pop3d_enable = false
+    $pop3d_ensure = 'stopped'
+  }
+
+  service { 'public-inbox-pop3d.socket':
+    ensure => $pop3d_ensure,
+    enable => $pop3d_enable,
   }
 
   file { '/etc/systemd/system/public-inbox-watch.service':

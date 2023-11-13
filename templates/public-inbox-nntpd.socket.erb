@@ -3,7 +3,13 @@
 Description = public-inbox-nntpd socket
 
 [Socket]
+<% if @nntpd_listen_port.class == Array -%>
+<% @nntpd_listen_port.each do |lport| -%>
+ListenStream = <%= lport %>
+<% end -%>
+<% else -%>
 ListenStream = <%= @nntpd_listen_port %>
+<% end -%>
 Service = public-inbox-nntpd@1.service
 
 [Install]

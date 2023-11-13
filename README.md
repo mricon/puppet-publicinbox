@@ -136,8 +136,16 @@ publicinbox::daemon_group: 'publicinbox'
 
 #### `enable_httpd`
 #### `httpd_listen_port`
+#### `httpd_daemon_flags`
 #### `enable_nntpd`
 #### `nntpd_listen_port`
+#### `nntpd_daemon_flags`
+#### `enable_imapd`
+#### `imapd_listen_port`
+#### `imapd_daemon_flags`
+#### `enable_pop3d`
+#### `pop3d_listen_port`
+#### `pop3d_daemon_flags`
 
 Whether to enable the daemons and on which port to run them.
 The default httpd port is 8080 because it is assumed you will be running a
@@ -147,8 +155,16 @@ Defaults:
 ```yaml
 publicinbox::enable_httpd: true
 publicinbox::httpd_listen_port: 8080
+publicinbox::httpd_daemon_flags: undef
 publicinbox::enable_nntpd: true
 publicinbox::nntpd_listen_port: 119
+publicinbox::nntpd_daemon_flags: undef
+publicinbox::enable_imapd: false
+publicinbox::imapd_listen_port: 143
+publicinbox::imapd_daemon_flags: undef
+publicinbox::enable_pop3d: false
+publicinbox::pop3d_listen_port: 110
+publicinbox::pop3d_daemon_flags: undef
 ```
 
 ### Config file parameters
@@ -169,6 +185,18 @@ Will create:
     nntpserver=nntp://news.example.com
 ```
 
+#### config::pop3state
+
+```yaml
+publicinbox::config::pop3state: '/var/lib/public-inbox'
+```
+
+Will create:
+
+```
+[publicinbox]
+    pop3state=/var/lib/public-inbox
+```
 
 #### config::watch
 
